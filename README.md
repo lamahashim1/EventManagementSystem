@@ -1,18 +1,18 @@
 # Event & Activity Management System
 
-## 🌟 Overview
+## Overview
 Developed a comprehensive, full-stack event management system designed to streamline the organization, execution, and tracking of various events. This robust platform provides dedicated interfaces for different administrative roles and end-users, significantly enhancing event registration rates and overall workflow efficiency.
 
 By leveraging a modern tech stack, the system ensures real-time data synchronization, secure user authentication, and a highly responsive user experience across all devices.
 
-## 🚀 Key Features
+## Key Features
 * **Role-Based Access Control:** Secure authentication for Administrators, Coordinators, Event Heads, and Participants.
 * **Event Lifecycle Management:** Tools to create, schedule, modify, and monitor events from inception to completion.
 * **Real-time Synchronization:** Seamless data flow ensuring all stakeholders have up-to-date information.
 * **Interactive Dashboards:** Customized data visualization panels for tracking attendance and performance metrics.
 * **Responsive UI/UX:** Clean, intuitive, and mobile-friendly interfaces designed with modern web standards.
 
-## 🛠️ Technology Stack
+## Technology Stack
 | Category | Technology | Purpose |
 | :--- | :--- | :--- |
 | **Backend Framework** | PHP & Node.js | Core server logic, API endpoints, and asynchronous processing. |
@@ -21,7 +21,7 @@ By leveraging a modern tech stack, the system ensures real-time data synchroniza
 | **Styling & UI** | Bootstrap | Responsive grid system, pre-designed components, and modern aesthetics. |
 | **Version Control** | Git & GitHub | Source code management and collaboration. |
 
-## 📂 System Modules
+## System Modules
 | Module Name | Description | Target User |
 | :--- | :--- | :--- |
 | **Administrator** | High-level system settings, user role management, and global oversight. | System Admins |
@@ -29,7 +29,7 @@ By leveraging a modern tech stack, the system ensures real-time data synchroniza
 | **EventHead** | Specific event tracking, attendance monitoring, and local task management. | Event Heads |
 | **EventWebSite** | Public-facing portal for browsing events and seamless registration. | Participants |
 
-## ⚙️ Setup & Installation
+## Setup & Installation
 1. Clone the repository:
    ```bash
    git clone https://github.com/lamahashim1/EventManagementSystem.git
@@ -39,8 +39,8 @@ By leveraging a modern tech stack, the system ensures real-time data synchroniza
 4. Add your Firebase configuration keys to the environment variables.
 5. Launch the application server and access the platform via your local host.
 
-## 👨‍💻 Developed By
+## Developed By
 **LAMA HASHIM KHAWAJI**
 
-## 📄 License
+## License
 This project was developed as a university graduation requirement and is intended for educational and portfolio demonstration purposes.
