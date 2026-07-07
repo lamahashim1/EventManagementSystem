@@ -1,0 +1,160 @@
+{% extends 'EventWebSite/base.html' %}
+
+{% load static %}
+
+{% block title %}
+    <title>EV-System | Events</title>
+{% endblock %}
+
+{% block loadcss %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/EventWebSite/event_detail.css' %}">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" 
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
+      crossorigin="anonymous" 
+      referrerpolicy="no-referrer" />
+    <style>
+        .event_title_container {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url("{% static 'media/event_title.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .card-img-top {
+            height: 250px;
+            object-fit: cover;
+            object-position: center;
+        }
+        
+        .event-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 2;
+        }
+        .hover-shadow {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-shadow:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #f8f9fa;
+    color: #074d32;
+    box-shadow: none;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: rgba(0,0,0,.125);
+}
+
+.event-details {
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+}
+
+.card-title {
+    min-height: 3.5rem;
+}
+
+@media (max-width: 768px) {
+    .event_title_container {
+        height: 300px;
+    }
+    
+    .event_title_container h1 {
+        font-size: 2.5rem;
+    }
+}
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="event_title_container text-white">
+    <div class="container text-center">
+        <!-- <h1 class="display-4 fw-bold mb-4">EV-System Events</h1> -->
+        <!-- <p class="lead">Discover upcoming  events and activities</p> -->
+    </div>
+</div>
+
+<div class="container py-5">
+    <form id="event_search" method="GET" class="mb-5">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control form-control-lg" 
+                   placeholder="Search events..." aria-label="Search events">
+            <button type="submit" class="btn btn-success btn-lg px-4">
+                <i class="fa fa-search"></i>
+            </button>
+            <a href="{% url 'event_detail' %}" class="btn btn-outline-secondary btn-lg px-4">
+                Clear
+            </a>
+        </div>
+    </form>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for event in event_list %}    
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0 hover-shadow">
+                <div class="position-relative">
+                    <img src="{{ event.event_logo.url }}" class="card-img-top" alt="{{ event.event_name }}">
+                    <span class="event-status badge {% if event.event_status == 'active' %}bg-success{% else %}bg-danger{% endif %}">
+                        {{ event.event_status|title }}
+                    </span>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title fw-bold text-success">{{ event.event_name }}</h5>
+                    <p class="card-text text-muted mb-3">{{ event.event_detail|truncatechars:100 }}</p>
+                    
+                    <div class="event-details">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-secondary">Registration Fee:</span>
+                            <span class="fw-bold">${{ event.fees }}</span>
+                        </div>
+                        
+                        <div class="accordion accordion-flush" id="rulesAccordion{{ forloop.counter }}">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" 
+                                            data-bs-target="#rulesCollapse{{ forloop.counter }}">
+                                        View Rules
+                                    </button>
+                                </h2>
+                                <div id="rulesCollapse{{ forloop.counter }}" 
+                                     class="accordion-collapse collapse" 
+                                     data-bs-parent="#rulesAccordion{{ forloop.counter }}">
+                                    <div class="accordion-body">
+                                        {{ event.rules|linebreaks }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-top-0">
+                    <a href="#" class="btn btn-success w-100">Register Now</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block loadScript %}
+<!-- Bootstrap 5 JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Font Awesome -->
+<script src="https://kit.fontawesome.com/your-kit-code.js" crossorigin="anonymous"></script>
+{% endblock %}

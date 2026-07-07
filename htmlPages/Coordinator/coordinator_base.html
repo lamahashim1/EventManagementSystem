@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Coordinator Dashboard | NUTECH-2020</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'media/favicon.ico' %}" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("{% static 'media/nirma_bck.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+        }
+        .dashboard_detail {
+            display: flex;
+            gap: 2rem;
+            padding: 2rem;
+        }
+        #coordinator_links {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            width: 280px;
+            min-height: 80vh;
+        }
+        .section {
+            color: #074d32;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin: 1rem 0;
+        }
+        #coordinator_links a {
+            color: #2c3e50;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+        #coordinator_links a:hover {
+            background-color: #074d3220;
+            color: #053a24;
+        }
+        #coordinator_links hr {
+            margin: 1rem 0;
+            opacity: 0.1;
+        }
+        #content {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+        }
+        .active-link {
+            background-color: #074d32!important;
+            color: white!important;
+            font-weight: 500;
+        }
+    </style>
+    {% block loadcss %}{% endblock %}
+</head>
+<body>
+    {% include 'Coordinator/coordinator_header.html' %}
+
+    <div class="dashboard_detail">
+        <!-- Sidebar Menu for Coordinator -->
+        <nav id="coordinator_links">
+            <div class="section">Coordinator Actions</div>
+            <hr>
+            <a href="{% url 'coordinator_confirm_participation' %}" class="{% if request.resolver_match.url_name == 'coordinator_confirm_participation' %}active-link{% endif %}">Confirm Participants</a>
+            <hr>
+            <a href="{% url 'coordinator_participation_certi_issue' %}" class="{% if request.resolver_match.url_name == 'coordinator_participation_certi_issue' %}active-link{% endif %}">Participation Certificate Issue</a>
+            <hr>
+            <a href="{% url 'coordinator_winner_certi_issue' %}" class="{% if request.resolver_match.url_name == 'coordinator_winner_certi_issue' %}active-link{% endif %}">Winner Certificate Issue</a>
+            <hr>
+        </nav>
+
+        <!-- Content Area for Coordinator -->
+        <main id="content">
+            {% block content %}
+            <!-- The specific data and content for this page will go here -->
+            {% endblock %}
+        </main>    
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    {% block loadScript %}{% endblock %}
+</body>
+</html>

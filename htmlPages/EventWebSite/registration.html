@@ -1,0 +1,143 @@
+{% extends  'EventWebSite/base.html' %}
+
+{% load static %}
+
+{% block loadcss %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/EventWebSite/registration.css' %}" type="text/css">  
+    <style>
+        body {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("{% static 'media/nirma_bck.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+        }
+        .auth-box {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .auth-box-title {
+            color: #2c3e50;
+            font-weight: 700;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .form-floating label {
+            color: #7f8c8d;
+        }
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #074d32;
+        }
+        .btn-success {
+            background-color: #074d32;
+            border: none;
+            padding: 12px 0;
+            font-weight: 600;
+        }
+        .btn-success:hover {
+            background-color: #053a24;
+        }
+        .events-section {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        .event-checkbox {
+            margin-bottom: 1rem;
+        }
+        .total-fees {
+            font-weight: 600;
+            color: #074d32;
+            font-size: 1.2rem;
+        }
+        a {
+            color: white!important;
+        }
+    </style>
+{% endblock %}
+
+{% block title %}
+    <title>Registration | NUTECH-2020</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row min-vh-100 justify-content-center align-items-center">
+        <div class="col-12 col-lg-8">
+            <div class="auth-box p-5">
+                <h1 class="auth-box-title">Event Registration</h1>
+
+                {% if messages %}
+                <div class="alert alert-danger" role="alert">
+                    <ul class="mb-0">
+                        {% for message in messages %}
+                        <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="row g-4">
+                        {% for field in regform %}
+                        <div class="col-md-6">
+                            <div class="form" dir="rtl">
+                                {{ field }}
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text|safe }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="events-section">
+                        <h5 class="mb-4">Select Events</h5>
+                        <div class="row g-3">
+                            {% for event in events %}
+                            <div class="col-md-6">
+                                <div class="event-checkbox form-check p-3 border rounded">
+                                    <input class="form-check-input" type="checkbox" 
+                                           id="{{ event.event_name }}_checkbox" 
+                                           name="select_event" 
+                                           value="{{event.event_name}}" 
+                                           onchange="changeToAmount('{{event.event_name}}', '{{event.fees}}')">
+                                    <label class="form-check-label d-flex justify-content-between w-100" 
+                                           for="{{ event.event_name }}_checkbox">
+                                        <span>{{ event.event_name }}</span>
+                                        <span class="text-muted">$<span id="fees_{{event.event_name}}">{{event.fees}}</span></span>
+                                    </label>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="total-fees-container d-flex justify-content-end mt-4">
+                            <div class="total-fees">
+                                Total Fees: $<span id="fee_amount">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-success btn-lg">Complete Registration</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block loadScript %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'script/registration.js' %}" type="text/javascript"></script>
+{% endblock %}

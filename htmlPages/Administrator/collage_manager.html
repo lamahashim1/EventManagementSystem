@@ -1,0 +1,122 @@
+{% extends 'Administrator/administrator_base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Colleges</title>
+{% endblock %}
+
+{% block loadcss %}
+<style>
+    .main_detail_container {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 2rem;
+        margin: 1rem;
+    }
+
+    #table_title {
+        color: #2c3e50;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+    }
+
+    .manage_table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1.5rem;
+    }
+
+    .manage_table th {
+        background-color: #074d32;
+        color: white;
+        padding: 12px;
+        text-align: left;
+    }
+
+    .manage_table td {
+        padding: 12px;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .manage_table tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .inline_form_btn {
+        display: inline-flex;
+        align-items: center;
+        background-color: #074d32;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+
+    .inline_form_btn img {
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="main">
+    <div class="main_detail_container" id="main_detail_container">
+        <h1><p id="table_title">Colleges</p></h1>
+
+        <div class="inline_form">
+            {% if not addcollage_form %}
+            <a class="inline_form_btn" href="{% url 'collage_add' %}">
+                <img src="{% static 'media/add_logo.png' %}">
+                Add College
+            </a>
+            {% endif %}
+        </div>
+
+        {% if addcollage_form %}
+        <form method="POST" action="{% url 'collage_add' %}" class="inline_form">
+            {% csrf_token %}
+            {% for field in addcollage_form %}
+            <div class="inlineFieldWrapper">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {{ field.errors }}
+            </div>
+            {% endfor %}
+            <button type="submit" class="inline_form_btn">
+                <img src="{% static 'media/add_logo.png' %}"> Add College
+            </button>
+            <a href="{% url 'collage_manager' %}" class="inline_form_btn">Cancel</a>
+        </form>
+        {% endif %}
+
+        <table id="manage_table" class="manage_table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>College Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for clg in collages %}
+                <tr>
+                    <td>{{ clg.clg_id }}</td>
+                    <td>{{ clg.clg_name }}</td>
+                    <td>
+                        <a class="inline_form_btn" href="{% url 'collage_edit' clg_id=clg.clg_id %}">Edit</a>
+                        <a class="inline_form_btn" href="{% url 'collage_delete' clg_id=clg.clg_id %}">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block loadscript %}
+{% endblock %}

@@ -1,0 +1,346 @@
+{% extends 'Administrator/administrator_base.html'%}
+
+{% load static %}
+
+{% block title %}
+<title>Event Management</title>
+{% endblock %}
+
+{% block loadcss %}
+<style>
+    .main_detail_container {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 2rem;
+        margin: 1rem;
+    }
+
+    #table_title {
+        color: #2c3e50;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+    }
+
+    .fieldWrapper {
+        margin-bottom: 1.5rem;
+    }
+
+    label {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .value {
+        color: #4a5568;
+        padding: 0.75rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        display: block;
+    }
+
+    .small_btn {
+        background-color: #074d32;
+        color: white!important;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        margin-right: 1rem;
+    }
+
+    .small_btn:hover {
+        background-color: #053a24;
+        transform: translateY(-1px);
+    }
+
+    #editevent_logo {
+        max-width: 200px;
+        height: auto;
+        border-radius: 8px;
+        margin-top: 1rem;
+    }
+
+    .manage_table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1.5rem;
+    }
+
+    .manage_table th {
+        background-color: #074d32;
+        color: white;
+        padding: 12px;
+        text-align: left;
+    }
+
+    .manage_table td {
+        padding: 12px;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .manage_table tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .event_tag {
+        background-color: #074d3210;
+        color: #074d32;
+        padding: 4px 12px;
+        border-radius: 20px;
+        margin: 4px;
+        display: inline-block;
+        font-size: 0.9rem;
+    }
+
+    .form-control {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        width: 100%;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #074d32;
+        box-shadow: none;
+    }
+
+    #deleteConfDialogbox {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        margin: 2rem auto;
+        max-width: 500px;
+        text-align: center;
+    }
+
+    .inline_form_btn {
+        background-color: #074d32;
+        color: white!important;
+        padding: 10px 20px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .inline_form_btn:hover {
+        background-color: #053a24;
+        transform: translateY(-1px);
+    }
+
+    .inline_form_btn_logo {
+        height: 20px;
+        width: 20px;
+        filter: brightness(0) invert(1);
+    }
+</style>
+{% endblock%}
+
+{% block content %}
+<div class="main">
+    <div class="main_detail_container">
+        {% if eventdetail %}
+        <h1 id="table_title">Event Details</h1>
+        <div class="grid grid-cols-2 gap-4">
+            <div class="fieldWrapper">
+                <label>Event ID</label>
+                <p class="value">{{ eventdetail.event_id }}</p>
+            </div>
+            <div class="fieldWrapper">
+                <label>Event Name</label>
+                <p class="value">{{ eventdetail.event_name }}</p>
+            </div>
+            <div class="fieldWrapper">
+                <label>Event Logo</label>
+                <img src="{{ eventdetail.event_logo.url }}" class="value" style="max-width: 200px;">
+            </div>
+            <div class="fieldWrapper">
+                <label>Event Status</label>
+                <p class="value">{{ eventdetail.event_status }}</p>
+            </div>
+            <div class="fieldWrapper col-span-2">
+                <label>Event Details</label>
+                <p class="value">{{ eventdetail.event_detail }}</p>
+            </div>
+            <div class="fieldWrapper col-span-2">
+                <label>Rules</label>
+                <p class="value">{{ eventdetail.rules }}</p>
+            </div>
+            <div class="fieldWrapper">
+                <label>Venue</label>
+                <p class="value">{{ eventdetail.venue }}</p>
+            </div>
+            <div class="fieldWrapper">
+                <label>Date & Time</label>
+                <p class="value">{{ eventdetail.date_time }}</p>
+            </div>
+            <div class="fieldWrapper">
+                <label>Fees</label>
+                <p class="value">${{ eventdetail.fees }}</p>
+            </div>
+        </div>
+        <div class="fieldWrapper mt-4">
+            <a href="{% url 'event_edit' event_id=eventdetail.event_id %}" class="small_btn">Edit Event</a>
+            <a href="{% url 'event_delete' event_id=eventdetail.event_id %}" class="small_btn">Delete Event</a>
+            <a href="{% url 'event_manager' %}" class="small_btn">Back to Manager</a>
+        </div>
+
+        {% elif addevent_form %}
+        <h1 id="table_title">Add New Event</h1>
+        <form method="POST" enctype="multipart/form-data" class="space-y-4">
+            {% csrf_token %}
+            <div class="grid grid-cols-2 gap-4">
+                {% for field in addevent_form %}
+                <div class="fieldWrapper">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                    <small class="help-text">{{ field.help_text|safe }}</small>
+                    {% endif %}
+                    {{ field.errors }}
+                </div>
+                {% endfor %}
+            </div>
+            <div class="fieldWrapper mt-4">
+                <button type="submit" class="small_btn">Create Event</button>
+                <a href="{% url 'event_manager' %}" class="small_btn">Cancel</a>
+            </div>
+        </form>
+
+        {% elif editevent_form %}
+        <h1 id="table_title">Edit Event</h1>
+        <form method="POST" enctype="multipart/form-data" class="space-y-4">
+            {% csrf_token %}
+            <div class="grid grid-cols-2 gap-4">
+                <div class="fieldWrapper">
+                    <label>Event ID</label>
+                    <p class="value">{{ editevent_form.event_id }}</p>
+                </div>
+                <div class="fieldWrapper">
+                    <label for="id_event_name">Event Name</label>
+                    {{ editevent_form.event_name }}
+                </div>
+                <div class="fieldWrapper">
+                    <label for="id_event_logo">Event Logo</label>
+                    <input type="file" name="event_logo" accept="image/*" 
+                           class="form-control" onchange="changeLogo(this)">
+                    <img id="editevent_logo" src="{{ editevent_form.initial.event_logo.url }}" 
+                         class="mt-2 rounded-lg shadow-sm">
+                </div>
+                <div class="fieldWrapper">
+                    <label for="id_event_status">Event Status</label>
+                    {{ editevent_form.event_status }}
+                </div>
+                <div class="fieldWrapper col-span-2">
+                    <label for="id_event_detail">Event Details</label>
+                    {{ editevent_form.event_detail }}
+                </div>
+                <div class="fieldWrapper col-span-2">
+                    <label for="id_rules">Rules</label>
+                    {{ editevent_form.rules }}
+                </div>
+                <div class="fieldWrapper">
+                    <label for="id_venue">Venue</label>
+                    {{ editevent_form.venue }}
+                </div>
+                <div class="fieldWrapper">
+                    <label for="id_date_time">Date & Time</label>
+                    {{ editevent_form.date_time }}
+                    <small class="help-text">Format: YYYY-MM-DD HH:MM:SS</small>
+                </div>
+                <div class="fieldWrapper">
+                    <label for="id_fees">Fees</label>
+                    {{ editevent_form.fees }}
+                </div>
+            </div>
+            <div class="fieldWrapper mt-4">
+                <button type="submit" class="small_btn">Save Changes</button>
+                <a href="{% url 'event_info' event_id=editevent_id %}" class="small_btn">Cancel</a>
+            </div>
+        </form>
+
+        {% else %}
+        <div class="flex justify-between items-center mb-4">
+            <h1 id="table_title">Events Management</h1>
+            <a href="{% url 'event_add' %}" class="inline_form_btn">
+                <img src="{% static 'media/add_logo.png' %}" class="inline_form_btn_logo">
+                Add Event
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="manage_table">
+                <thead>
+                    <tr>
+                        <th>Event ID</th>
+                        <th>Event Name</th>
+                        <th>Event Heads</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in events %}
+                    <tr>
+                        <td>{{ event.event_id }}</td>
+                        <td>{{ event.event_name }}</td>
+                        <td>
+                            {% for event_head in event_heads|get_item:event.event_id %}
+                            <span class="event_tag">{{ event_head.reg_no__committee_id }}</span>
+                            {% endfor %}
+                        </td>
+                        <td>{{ event.event_status }}</td>
+                        <td>
+                            <div class="flex gap-2">
+                                <a href="{% url 'event_info' event_id=event.event_id %}" class="small_btn">Details</a>
+                                <a href="{% url 'event_participation_list' event_id=event.event_id %}" 
+                                   class="small_btn">Participants</a>
+                                <a href="{% url 'event_winners_list' event_id=event.event_id %}" 
+                                   class="small_btn">Winners</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        {% if deleteevent %}
+        <div id="deleteConfDialogbox">
+            <p class="text-lg font-semibold mb-4">Confirm Delete</p>
+            <p>Are you sure you want to delete "{{ deleteevent }}"?</p>
+            <form method="POST" class="mt-4 space-x-4">
+                {% csrf_token %}
+                <button type="submit" class="small_btn bg-red-600 hover:bg-red-700">Delete</button>
+                <a href="{% url 'event_info' event_id=deleteevent_id %}" class="small_btn">Cancel</a>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block loadscript %}
+<script>
+    function changeLogo(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('editevent_logo').src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+{% endblock %}

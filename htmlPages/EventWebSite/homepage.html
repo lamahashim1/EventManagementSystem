@@ -1,0 +1,681 @@
+{% extends 'EventWebSite/base.html' %}
+
+    {% load static %}
+    
+    {% block loadcss %}
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/EventWebSite/homepage.css' %}">
+
+    {% endblock %}
+
+    {% block title %}
+
+    <title>EV-System</title>
+
+    {% endblock %}
+
+    {% block content %}
+
+    <div id="main_image">
+        <img src="{% static 'media/slideshow.jpg' %}" alt="slideshow Image 1">
+    </div>
+
+    <div id="news" class="news-container">
+        <div class="news-header">
+            <i class="fas fa-bullhorn"></i>
+            <h3>Latest Announcements</h3>
+        </div>
+        <div class="news-list">
+            {% for n in news %}
+            <div class="news-item {% if n.hyperlink %}link-item{% endif %}">
+
+                    <div class="news-content">
+                        {{n.news_content}}
+                    </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+   
+    
+    <!-- Add this in your head section for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <div id="about" class="middle_content">
+        <div class="row">
+            <div class="col">
+                <p class="aboutus_title" id="aboutus">About Us</p>
+
+                <p id="aboutus_content">Welcome to the Event and Activity Management System (EAMS), a cutting-edge web-based platform designed to revolutionize event management in Saudi Arabia. At EAMS, we are committed to empowering event organizers with a comprehensive, culturally adaptive, and user-friendly solution that simplifies every stage of event planning, execution, and analysis. Our mission is to align with Saudi Arabia’s Vision 2030 by fostering growth in tourism, education, and business sectors through innovative event management tools.</p>
+        
+            </div>
+            <div class="col">
+                <img src="{% static 'media/slideshow.jpg' %}" alt="about-section-image" style="width: 100%; height: 100%;">
+            </div>
+        </div>
+       
+    </div>
+
+
+<link rel="stylesheet" href="https://unpkg.com/swiper@5.3.0/css/swiper.min.css">
+
+<div id="sponsers" style="z-index: -1;">
+    <div class="sponsers_title">Sponsors</div> 
+    <div class="swiper-container sponsers_container">
+        <div class="swiper-wrapper">
+            <!-- Duplicate slides for better loop effect -->
+            <div class="swiper-slide sponser_item">
+                <div class="sponser_image">
+                    <img src="{% static 'media/fasoos.png' %}">
+                </div>
+            </div>
+            <div class="swiper-slide sponser_item">
+                <div class="sponser_image">
+                    <img src="{% static 'media/Paytm_logo.png' %}">
+                </div>
+            </div>
+            <div class="swiper-slide sponser_item">
+                <div class="sponser_image">
+                    <img src="{% static 'media/rebull.png' %}">
+                </div>
+            </div>
+            <div class="swiper-slide sponser_item">
+                <div class="sponser_image">
+                    <img src="{% static 'media/ibm.png' %}">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation Arrows -->
+        <div class="swiper-button-next" style="color:#074d32"></div>
+        <div class="swiper-button-prev" style="color:#074d32"></div>
+    </div>
+</div>
+
+<div id="contact_us_container" class="contact_us_container">
+    <div class="contact_tile">
+        <h1>Contact Us</h1>
+        <hr>
+    </div>
+
+    <!-- Features Section -->
+    <div class="features-section">
+        <div class="feature-card">
+            <i class="fas fa-clock"></i>
+            <h3>24/7 Support</h3>
+            <p>Round-the-clock assistance for all your queries and concerns</p>
+        </div>
+        <div class="feature-card">
+            <i class="fas fa-shield-alt"></i>
+            <h3>Secure Communication</h3>
+            <p>Encrypted communication channels for maximum security</p>
+        </div>
+        <div class="feature-card">
+            <i class="fas fa-map-marker-alt"></i>
+            <h3>Visit Us</h3>
+            <p>Jizan University Campus, Ahmedabad, Gujarat</p>
+        </div>
+    </div>
+
+    <!-- Contact Form and Map Container -->
+    <div class="contact-form-map-container">
+        <!-- Contact Form -->
+        <div class="contact-form">
+            <h2>Send us a Message</h2>
+            <form action="mailto:contact@example.com" method="post" enctype="text/plain">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="subject">Subject:</label>
+                    <input type="text" id="subject" name="subject" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+
+        <!-- Google Map -->
+        <div class="map-container">
+            <h2>Our Location</h2>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d55276.82835898913!2d42.57390751759868!3d16.90895759364952!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x150292b7b74e93ff%3A0x7fe149c60e9281ea!2sJazan%20University!5e0!3m2!1sen!2ssa!4v1678143591890!5m2!1sen!2ssa" 
+            width="600" 
+            height="450" 
+            style="border:0" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        </div>
+    </div>
+</div>
+
+
+
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3>About Us</h3>
+            <p>The Event System is a platform designed for the National Level Technical Fest of the Institute of Technology at Jazan University, aimed at promoting the 'SHAURYA' spirit. This system provides students with an opportunity to showcase their talents, innovate, and explore their potential in a dynamic and competitive environment.</p>
+        </div>
+
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h3>Contact Info</h3>
+            <div class="contact-info">
+                <p>Email: contact@example.com</p>
+                <p>Phone: +91 12345 67890</p>
+                <p>Address: Jizan University, Ahmedabad</p>
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2025 Jazan university. All rights reserved.</p>
+    </div>
+</footer>
+
+
+    <script src="https://unpkg.com/swiper@5.3.0/js/swiper.min.js"></script>
+    <style>
+
+.footer {
+    background-color: #074d32;
+    color: white;
+    padding: 40px 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.footer-section {
+    margin-bottom: 25px;
+}
+
+.footer-section h3 {
+    color: #fff;
+    margin-bottom: 20px;
+    font-size: 1.4em;
+    border-bottom: 2px solid #fff;
+    padding-bottom: 10px;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: #d1d1d1;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.contact-info p {
+    margin: 10px 0;
+    color: #d1d1d1;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.social-links a {
+    color: white;
+    font-size: 1.5em;
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: #c0c0c0;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #ffffff33;
+    color: #d1d1d1;
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+.contact_us_container {
+    padding: 40px 20px;
+    background-color: #f5f5f5;
+    font-family: 'Arial', sans-serif;
+}
+
+.contact_tile {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.contact_tile h1 {
+    color: #074d32;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.contact_tile hr {
+    width: 80px;
+    height: 2px;
+    background-color: #074d32;
+    border: none;
+    margin: 0 auto;
+}
+
+.contact_data {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.contact {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    width: 350px;
+    transition: transform 0.3s ease;
+}
+
+.contact:hover {
+    transform: translateY(-5px);
+}
+
+.contact h2 {
+    color: #074d32;
+    margin-bottom: 15px;
+    font-size: 1.8em;
+}
+
+.contact h4 {
+    color: #555;
+    line-height: 1.6;
+    font-weight: normal;
+}
+
+.email_contact, .contactno_contact {
+    margin: 10px 0;
+}
+
+.linkedin_contact a {
+    color: #074d32;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.linkedin_contact a:hover {
+    color: #043321;
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .contact_data {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .contact {
+        width: 90%;
+    }
+}
+
+        .notice{
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 90%;
+        }
+
+        .notice .main{
+            background-color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+
+        .notice .align_center{
+            text-align: center;
+        }
+
+        .notice .closeNotice{
+            height: unset;
+            width: unset;
+            padding: 8px 25px;
+            border-radius: 10px;
+            font-size: 120%;
+            background-color:  #074d32;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        @media only screen and (max-width: 1140px) {
+            #notice1 {
+                display: block;
+            }
+        }
+        #notice1{
+            z-index: 10;
+        }
+
+        /* #notice2{
+            display: block;
+        } */
+
+    .news-container {
+        padding: 2% 0%;
+        margin: 20px;
+        background: #074d32;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        padding: 2rem;
+        margin: 2rem 0;
+        font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+    
+    .news-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #f0f2f5;
+    }
+    
+    .news-header i {
+        color: #4a90e2;
+        font-size: 1.5rem;
+        margin-right: 12px;
+    }
+    
+    .news-header h3 {
+        margin: 0;
+        color: #ffffff;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+    
+    .news-list {
+        display: grid;
+        gap: 1rem;
+    }
+    
+    .news-item {
+        padding: 1.25rem;
+        border-radius: 8px;
+        background: #f8f9fa;
+        transition: all 0.2s ease;
+        position: relative;
+    }
+    
+    .news-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        background: #ffffff;
+    }
+    
+    .news-link {
+        color: #2d3436;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+    }
+    
+    .news-link:hover {
+        color: #4a90e2;
+    }
+    
+    .link-icon {
+        color: #74b9ff;
+        margin-right: 12px;
+        font-size: 0.9rem;
+    }
+    
+    .news-content {
+        line-height: 1.6;
+        color: #636e72;
+    }
+    
+    .news-item.link-item {
+        border-left: 3px solid #4a90e2;
+    }
+    
+    @media (max-width: 768px) {
+        .news-container {
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .news-header h3 {
+            font-size: 1.3rem;
+        }
+    }
+    
+/* Add this CSS */
+.features-section {
+    color: #074d32!important;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.feature-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-card i {
+    font-size: 2.5em;
+    color: #074d32;
+    margin-bottom: 20px;
+}
+
+.contact-form-map-container {
+    color: #074d32!important;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.contact-form {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.map-container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #074d32;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #074d32;
+    outline: none;
+}
+
+.submit-btn {
+    background: #074d32;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease;
+}
+
+.submit-btn:hover {
+    background: #043321;
+}
+
+@media (max-width: 768px) {
+    .contact-form-map-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .map-container iframe {
+        width: 100%;
+        height: 300px;
+    }
+}
+
+.sponser_image img {
+    width: 100%;
+    height: 100px; /* ارتفاع ثابت لكل الشعارات */
+    object-fit: contain; /* يحافظ على نسبة الأبعاد دون قص الصورة */
+    padding: 10px; /* إضافة مسافة داخلية لمنع الالتصاق */
+}
+
+/* Add Font Awesome for icons */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+</style>
+
+    <!-- <div id="notice1" class="notice">
+        <div class="main">
+            <h1 class="align_center">Notice</h1>
+            <p>This website is only designed for viewing on desktop browsers. So, to have good experience kindly open this on Desktop/Laptop Browser.</p>
+            <div class="align_center">
+                <button onclick="closeNotice1()" id="closeNoticebtn" class="closeNotice">Close</button>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- <div id="notice2" class="notice">
+        <div class="main">
+            <p>For better understanding of project please visit <a href="https://github.com/bhargavprajapati949/EventManagementSystem" target="_blank">Documentation.</a></p>
+            <div class="align_center">
+                <button onclick="closeNotice2()" id="closeNoticebtn" class="closeNotice">Close</button>
+            </div>
+        </div>
+    </div> -->
+
+    <script>
+        function closeNotice1(){
+            document.getElementById('notice1').style.display = "none";
+        }
+
+        function closeNotice2(){
+            document.getElementById('notice2').style.display = "none";
+        }
+
+        var swiper = new Swiper('.swiper-container', {
+            loop: true,
+            speed: 800,
+            slidesPerView: 3,
+            slidesPerGroup: 3,
+            spaceBetween: 30,
+            centeredSlides: true,
+            grabCursor: true,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                // when window width is >= 320px
+                320: {
+                    slidesPerView: 1,
+                    slidesPerGroup: 1
+                },
+                // when window width is >= 768px
+                768: {
+                    slidesPerView: 2,
+                    slidesPerGroup: 2
+                },
+                // when window width is >= 1024px
+                1024: {
+                    slidesPerView: 3,
+                    slidesPerGroup: 3
+                }
+            }
+        });
+    </script>
+    {% endblock %}

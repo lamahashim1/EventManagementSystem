@@ -1,0 +1,206 @@
+{% extends 'EventHead/eventHead_base.html' %}
+
+{% load static %}
+
+{% block title %} 
+<title>Result Entry | Event Head</title>
+{% endblock %}
+
+{% block loadcss %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/dashboard_manager.css' %}">
+<style>
+    .main_detail_container {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 2rem;
+        margin: 1rem;
+    }
+
+    #table_title {
+        color: #2c3e50;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+    }
+
+    .inline_form_btn {
+        display: inline-flex;
+        align-items: center;
+        background-color: #074d32;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+
+    .inline_form_btn img {
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+    }
+
+    .manage_table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1.5rem;
+    }
+
+    .manage_table th {
+        background-color: #074d32;
+        color: white;
+        padding: 12px;
+        text-align: left;
+    }
+
+    .manage_table td {
+        padding: 12px;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .manage_table tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .help {
+        color: red;
+        margin-bottom: 1rem;
+    }
+
+    .small_btn a {
+        color: white;
+        text-decoration: none;
+    }
+
+    .small_btn {
+        display: inline-flex;
+        align-items: center;
+        background-color: #074d32;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 5px;
+    }
+
+    .fieldWrapper {
+        margin-top: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="main">
+    <div class="main_detail_container" id="main_detail_container">
+        <h1><p id="table_title">Winner Entry</p></h1> 
+
+        <!-- First Position Form -->
+        <form method="POST" class="inline_form">
+            {% csrf_token %}
+            <div class="inlineFieldWrapper">
+                <label for="firstPosition">1<sup>st</sup> Position : </label>
+            </div>
+            <div class="inlineFieldWrapper">
+                <input type="hidden" name="position" value="1">
+                <select name="reg_no" id="firstPosition" required>
+                    {% for participant in participants %}
+                    <option value="{{participant.reg_no}}">{{participant.reg_no}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="inlineFieldWrapper">
+                <button class="inline_form_btn" type="submit">
+                    <img src="{% static 'media/add_logo.png' %}" class="inline_form_btn_logo">
+                    <span>Add 1<sup>st</sup> Position Winner</span>
+                </button>
+            </div>
+        </form>
+
+        <!-- Second Position Form -->
+        <form method="POST" class="inline_form">
+            {% csrf_token %}
+            <div class="inlineFieldWrapper">
+                <label for="secondPosition">2<sup>nd</sup> Position : </label>
+            </div>
+            <div class="inlineFieldWrapper">
+                <input type="hidden" name="position" value="2">
+                <select name="reg_no" id="secondPosition" required>
+                    {% for participant in participants %}
+                    <option value="{{participant.reg_no}}">{{participant.reg_no}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="inlineFieldWrapper">
+                <button class="inline_form_btn" type="submit">
+                    <img src="{% static 'media/add_logo.png' %}" class="inline_form_btn_logo">
+                    <span>Add 2<sup>nd</sup> Position Winner</span>
+                </button>
+            </div>
+        </form>
+
+        <!-- Third Position Form -->
+        <form method="POST" class="inline_form">
+            {% csrf_token %}
+            <div class="inlineFieldWrapper">
+                <label for="thirdPosition">3<sup>rd</sup> Position : </label>
+            </div>
+            <div class="inlineFieldWrapper">
+                <input type="hidden" name="position" value="3">
+                <select name="reg_no" id="thirdPosition" required>
+                    {% for participant in participants %}
+                    <option value="{{participant.reg_no}}">{{participant.reg_no}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="inlineFieldWrapper">
+                <button class="inline_form_btn" type="submit">
+                    <img src="{% static 'media/add_logo.png' %}" class="inline_form_btn_logo">
+                    <span>Add 3<sup>rd</sup> Position Winner</span>
+                </button>
+            </div>
+        </form>
+
+        <!-- Display Winner Messages -->
+        {% if winner_messages %}
+        {% for message in winner_messages %}
+        <div class="inline_form justify-flex-start">
+            <p class="help">{{ message }}</p>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <!-- Winners Table -->
+        <table id="manage_table" class="manage_table">
+            <thead>
+                <tr>
+                    <th>Reg No</th>
+                    <th>Name</th>
+                    <th>Contact No</th>
+                    <th>Email</th>
+                    <th>Position</th>
+                    <th>Winner Certificate Issued</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for winner in winners %}
+                <tr>
+                    <td>{{ winner.winner__reg_no }}</td>
+                    <td>{{ winner.winner__reg_no__reg_no__fname }} {{ winner.winner__reg_no__reg_no__lname }}</td>
+                    <td>{{ winner.winner__reg_no__reg_no__contect_no }}</td>
+                    <td>{{ winner.winner__reg_no__reg_no__email }}</td>
+                    <td>{{ winner.position }}</td>
+                    <td><input type="checkbox" disabled {% if winner.winning_certificate_issue %} checked {% endif %} ></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="fieldWrapper">
+            <button class="small_btn">
+                <a href="{% url 'eventHead_dashboard' %}">Back To Dashboard</a>
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block loadScript %}
+{% endblock %}

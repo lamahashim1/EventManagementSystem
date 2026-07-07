@@ -1,0 +1,167 @@
+{% extends 'Administrator/administrator_base.html' %}
+
+{% load static %}
+
+{% block title %}
+<title>Co-ordinator</title>
+{% endblock %}
+
+{% block loadcss %}
+<style>
+    .main_detail_container {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 2rem;
+        margin: 1rem;
+    }
+
+    #table_title {
+        color: #2c3e50;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+    }
+
+    .manage_table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1.5rem;
+    }
+
+    .manage_table th {
+        background-color: #074d32;
+        color: white;
+        padding: 12px;
+        text-align: left;
+    }
+
+    .manage_table td {
+        padding: 12px;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .manage_table tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .inline_form_btn {
+        display: inline-flex;
+        align-items: center;
+        background-color: #074d32;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+
+    .inline_form_btn img {
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+    }
+
+    .small_btn {
+        background-color: #074d32;
+        color: white!important;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .small_btn:hover {
+        background-color: #053a24;
+        transform: translateY(-1px);
+    }
+
+    .status-active {
+        color: #28a745;
+        font-weight: 500;
+    }
+
+    .status-disable {
+        color: #dc3545;
+        font-weight: 500;
+    }
+
+    .errorlist {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        list-style: none;
+        padding-left: 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="main">
+    <div class="main_detail_container">
+        <h1 id="table_title">Coordinator Management</h1>
+
+        <form method="POST" class="inline_form">
+            {% csrf_token %}
+            {% for field in addCoordinator_form %}
+            <div class="inlineFieldWrapper">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {{ field.errors }}
+            </div>
+            {% endfor %}
+            <button type="submit" class="small_btn">
+               
+                Add Coordinator
+            </button>
+        </form>
+
+        <table class="manage_table">
+            <thead>
+                <tr>
+                    <th>Reg No</th>
+                    <th>Committee ID</th>
+                    <th>Name</th>
+                    <th>Contact No.</th>
+                    <th>Email ID</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for coordinator in coordinator_list %}
+                <tr>
+                    <td>{{coordinator.reg_no}}</td>
+                    <td>{{coordinator.reg_no__committee_id}}</td>
+                    <td>{{coordinator.reg_no__reg_no__fname}} {{coordinator.reg_no__reg_no__lname}}</td>
+                    <td>{{coordinator.reg_no__reg_no__contect_no}}</td>
+                    <td>{{coordinator.reg_no__reg_no__email}}</td>
+                    <td>
+                        {% if coordinator.isActive %}
+                        <span class="status-active">Active</span>
+                        {% else %}
+                        <span class="status-disable">Disabled</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form method="POST" action="{% url 'coordinator_disable' reg_no=coordinator.reg_no %}">
+                            {% csrf_token %}
+                            <button class="small_btn" type="submit">
+                                {% if coordinator.isActive %}Disable{% else %}Activate{% endif %}
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block loadscript %}
+{% endblock %}

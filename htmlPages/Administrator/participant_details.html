@@ -1,0 +1,319 @@
+{% extends 'Administrator/administrator_base.html'%}
+
+{% load static %}
+
+{% block title %}
+<title>Participant Management</title>
+{% endblock %}
+
+{% block loadcss %}
+<style>
+    .main_detail_container {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 2rem;
+        margin: 1rem;
+    }
+
+    #table_title {
+        color: #2c3e50;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+    }
+
+    .fieldWrapper {
+        margin-bottom: 1.5rem;
+    }
+
+    label {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .form-control {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        width: 100%;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #074d32;
+        box-shadow: none;
+    }
+
+    .small_btn {
+        background-color: #074d32;
+        color: white!important;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        margin-right: 1rem;
+    }
+
+    .small_btn:hover {
+        background-color: #053a24;
+        transform: translateY(-1px);
+    }
+
+    .event_tag {
+        background-color: #074d3210;
+        color: #074d32;
+        padding: 4px 12px;
+        border-radius: 20px;
+        margin: 4px;
+        display: inline-block;
+        font-size: 0.9rem;
+    }
+
+    .row {
+        display: flex;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .col-md-6 {
+        flex: 1;
+    }
+
+    .errorlist {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        list-style: none;
+        padding-left: 0;
+    }
+</style>
+{% endblock%}
+
+{% block content %}
+
+{% if edit_form %}
+<div class="main">
+    <div class="main_detail_container">
+        <h1 id="table_title">Edit Participant</h1>
+        <form method="POST" enctype='multipart/form-data'>
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="fieldWrapper">
+                        <label>Registration ID</label>
+                        <p class="form-control-plaintext">{{reg_no}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="fieldWrapper">
+                        <label for="{{participant_user_form.fname.id_for_label}}">First Name</label>
+                        {{participant_user_form.fname}}
+                        {{participant_user_form.fname.errors}}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="fieldWrapper">
+                        <label for="{{participant_user_form.lname.id_for_label}}">Last Name</label>
+                        {{participant_user_form.lname}}
+                        {{participant_user_form.lname.errors}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="fieldWrapper">
+                        <label for="{{participant_user_form.email.id_for_label}}">Email</label>
+                        {{participant_user_form.email}}
+                        {{participant_user_form.email.errors}}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="fieldWrapper">
+                        <label for="{{participant_user_form.contect_no.id_for_label}}">Contact No</label>
+                        {{participant_user_form.contect_no}}
+                        {{participant_user_form.contect_no.errors}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="fieldWrapper">
+                        <label for="{{participant_user_form.clg.id_for_label}}">College</label>
+                        {{participant_user_form.clg}}
+                        {{participant_user_form.clg.errors}}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="fieldWrapper">
+                        <label for="{{participant_user_form.stream.id_for_label}}">Stream</label>
+                        {{participant_user_form.stream}}
+                        {{participant_user_form.stream.errors}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="fieldWrapper">
+                        <label for="{{registers_form.remark.id_for_label}}">Remark</label>
+                        {{registers_form.remark}}
+                        {{registers_form.remark.errors}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="fieldWrapper">
+                        <label>Total Payment</label>
+                        <p class="form-control-plaintext">${{participant.total_payment}}</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="fieldWrapper">
+                        <label>Remaining Payment</label>
+                        <p class="form-control-plaintext">${{participant.remaining_payment}}</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="fieldWrapper">
+                        <label>Paid Amount</label>
+                        <p class="form-control-plaintext">${{participant.paid_payment}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="fieldWrapper">
+                        <label>Events Participated</label>
+                        <div>
+                            {% for event in events %}
+                            <span class="event_tag">{{ event.event__event_name }} - {{ event.reg_status}}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fieldWrapper mt-4">
+                <button type="submit" class="small_btn">Save Changes</button>
+                <a href="{% url 'participant_detail' reg_no=reg_no %}" class="small_btn">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% elif detail_form %}
+<div class="main">
+    <div class="main_detail_container">
+        <h1 id="table_title">Participant Details</h1>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="fieldWrapper">
+                    <label>Registration ID</label>
+                    <p class="detail-value">{{participant.reg_no}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="fieldWrapper">
+                    <label>Name</label>
+                    <p class="detail-value">{{participant.reg_no__fname}} {{participant.reg_no__lname}}</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="fieldWrapper">
+                    <label>Email</label>
+                    <p class="detail-value">{{participant.reg_no__email}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="fieldWrapper">
+                    <label>Contact No</label>
+                    <p class="detail-value">{{participant.reg_no__contect_no}}</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="fieldWrapper">
+                    <label>College</label>
+                    <p class="detail-value">{{participant.reg_no__clg_id__clg_name}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="fieldWrapper">
+                    <label>Stream</label>
+                    <p class="detail-value">{{participant.reg_no__stream__stream_name}}</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="fieldWrapper">
+                    <label>Remark</label>
+                    <p class="detail-value">{{participant.remark}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="fieldWrapper">
+                    <label>Total Payment</label>
+                    <p class="detail-value">${{participant.total_payment}}</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="fieldWrapper">
+                    <label>Remaining Payment</label>
+                    <p class="detail-value">${{participant.remaining_payment}}</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="fieldWrapper">
+                    <label>Paid Amount</label>
+                    <p class="detail-value">${{participant.paid_payment}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="fieldWrapper">
+                    <label>Events Participated</label>
+                    <div>
+                        {% for event in events %}
+                        <span class="event_tag">{{ event.event__event_name }} - {{ event.reg_status}}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fieldWrapper mt-4">
+            <a href="{% url 'participant_edit' reg_no=participant.reg_no %}" class="small_btn">Edit Details</a>
+            <a href="{% url 'participant_manager' %}" class="small_btn">Back to Manager</a>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

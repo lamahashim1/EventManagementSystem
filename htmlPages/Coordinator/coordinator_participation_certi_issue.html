@@ -1,0 +1,181 @@
+{% extends 'Coordinator/coordinator_base.html' %}
+
+{% load static %}
+
+{% block title %}
+<title> Coordinator | Participation Certificate Issue</title>
+{% endblock %}
+
+{% block loadcss %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/dashboard_manager.css' %}">
+<style>
+    .main {
+        display: flex;
+        gap: 2rem;
+        padding: 2rem;
+    }
+
+    .main_detail_container {
+        flex: 1;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 2rem;
+    }
+
+    #table_title {
+        font-size: 1.6rem;
+        color: #074d32;
+        margin-bottom: 1rem;
+    }
+
+    #manage_table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 2rem;
+    }
+
+    #manage_table th, #manage_table td {
+        padding: 1rem;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    #manage_table th {
+        background-color: #074d32;
+        color: white;
+    }
+
+    .small_btn {
+        background-color: #074d32;
+        color: white;
+        border: none;
+        padding: 5px 15px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .small_btn:hover {
+        background-color: #053a24;
+        transform: translateY(-1px);
+    }
+
+    .fieldWrapper {
+        margin-top: 2rem;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .fieldWrapper a {
+        color: white;
+        text-decoration: none;
+    }
+
+    .fieldWrapper .small_btn a {
+        display: block;
+        padding: 10px 20px;
+    }
+
+    #deleteConfDialogbox {
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+    }
+
+    #conftext {
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+        color: #2c3e50;
+    }
+
+    .help {
+        color: #e74c3c;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="main">
+    <div class="main_detail_container" id="main_detail_container">
+    
+        <h1><p id="table_title">Participation Certificate Issue</p></h1>
+
+        <table id="manage_table" class="manage_table">
+            <tr>
+                <th>Reg No</th>
+                <th>Name</th>
+                <th>Contact No</th>
+                <th>Email Id</th>
+                <th>Event</th>
+                <th>Event Id</th>
+                <th>Action</th>
+            </tr>
+
+            {% for participation in participation_list %}
+            <tr>
+                <td>{{participation.reg_no}}</td>
+                <td>{{participation.reg_no__reg_no__fname}} {{participation.reg_no__reg_no__lname}}</td>
+                <td>{{participation.reg_no__reg_no__contect_no}}</td>
+                <td>{{participation.reg_no__reg_no__email}}</td>
+                <td>{{participation.event__event_name}}</td>
+                <td>{{participation.event}}</td>
+                <td>    
+                    {% if participation.reg_status == 'Attended' %}
+                    <button class="small_btn">
+                        <a href="{% url 'issue_participation_certi' reg_no=participation.reg_no event_id=participation.event %}">Issue Certificate</a>
+                    </button>
+                    {% else %}
+                        {{participation.reg_status}}
+                    {% endif %}
+                </td>    
+            </tr>
+            {% endfor %}
+            
+        </table>
+
+        <br>
+        <br>
+        <br>
+
+        <div class="fieldWrapper">
+            <button class="small_btn">
+                <a href="{% url 'coordinator_dashboard' %}">Back To Dashboard</a>
+            </button>
+        </div>
+
+        {% if issue_certificate %}
+        <form method="POST">
+            {% csrf_token %}
+            <div id="deleteConfDialogbox">
+                <p id="conftext">Issue Certificate to participant with id {{issue_certificate.reg_no}} for the event with id {{issue_certificate.event_id}}</p>
+                <div class="fieldWrapper">
+                    <input type="text" name="certi_otp" placeholder="Certificate OTP" required>
+                </div>
+                <div class="fieldWrapper">
+                    {% if issue_certificate.otp_msg %}
+                    <p class="help">{{issue_certificate.otp_msg}}</p>
+                    {% endif %}
+                </div>
+                <div class="fieldWrapper">
+                    <button type="submit" class="small_btn">Issue Certificate</button>
+                    <button class="small_btn">
+                        <a href="{% url 'coordinator_participation_certi_issue' %}">Cancel</a>
+                    </button>
+                </div>
+            </div>
+        </form>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
+
+{% block loadScript %}
+{% endblock %}
